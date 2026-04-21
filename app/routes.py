@@ -40,7 +40,7 @@ def init_routes(app):
         }
 
         tx_hash = w3.eth.send_transaction(tx)
-        return tx_hash.hex()  # luôn có 0x
+        return tx_hash.hex()  # always have 0x
 
     #  VERIFY
     def verify_tx(tx_hash):
