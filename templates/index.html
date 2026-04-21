@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockchain Stamper</title>
+</head>
+<body>
+
+<h2>STAMP DATA</h2>
+
+<form method="POST">
+    <input name="data" placeholder="Enter your data">
+    <button type="submit">Stamp</button>
+</form>
+
+{% if tx_hash %}
+    <p><b>Transaction Hash:</b> {{ tx_hash }}</p>
+    <img src="/static/qr.png" width="200">
+{% endif %}
+
+<hr>
+
+<h2>VERIFY</h2>
+
+<form action="/verify" method="POST">
+    <input name="tx_hash" placeholder="Enter TX hash">
+    <button type="submit">Verify</button>
+</form>
+
+</body>
+</html>
