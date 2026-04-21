@@ -1,0 +1,177 @@
+# Blockchain Stamper (Ethereum + Flask)
+
+## Overview
+
+This project is a simple web application that demonstrates how a blockchain can be used as a permanent and verifiable ledger.
+
+Users can:
+
+* Stamp data onto the Ethereum blockchain
+* Verify data using a Transaction Hash (via QR code or manual input)
+
+The application connects to a local Ethereum node using Ganache and is built with Python (Flask + Web3.py).
+
+---
+
+## Features
+
+### Phase A – Stamper (Write to Blockchain)
+
+* Input a string (e.g., "Property of Son - Serial #1234")
+* Convert the string to hex format
+* Send a self-transaction (from your account to your own address)
+* Store the data in the transaction input field
+* Generate a QR Code containing the Transaction Hash
+
+---
+
+### Phase B – Verifier (Read from Blockchain)
+
+* Input a Transaction Hash (or scan QR code)
+* Fetch transaction details from the blockchain
+* Extract and decode the hex data (UTF-8)
+* Display:
+
+  * Original stamped data
+  * Sender address
+  * Block number
+  * Timestamp
+
+---
+
+## Important: Where to Get the Data in Ganache
+
+When using Ganache, each transaction contains two key fields:
+
+### 1. Transaction Hash (Used for Verification)
+
+Example:
+
+```
+0x965b57dacb99640ba98c9084377eed00ace75cb3f5353a143d11b98450094119
+```
+
+This is the only value you should use in the "Verify" feature.
+
+---
+
+### 2. TX DATA / Input Data (Not used for verification)
+
+Example:
+
+```
+0x50726f7065727479206f6620536f6e202d2053657269616c202331323334
+```
+
+This is the encoded version of your input string.
+
+* It is stored on-chain
+* It must be decoded back to UTF-8 to read the original message
+* It is not a transaction identifier
+
+---
+
+## Key Concept
+
+| Field            | Purpose                          |
+| ---------------- | -------------------------------- |
+| Transaction Hash | Used to retrieve the transaction |
+| TX Data (Hex)    | Stores the stamped message       |
+| Decoded Data     | Human-readable message           |
+
+---
+
+## Example Flow
+
+### Step 1 – Stamp Data
+
+Input:
+
+```
+Property of Son - Serial #1234
+```
+
+Stored on blockchain (TX DATA):
+
+```
+0x50726f7065727479...
+```
+
+Transaction Hash:
+
+```
+0x965b57da...
+```
+
+---
+
+### Step 2 – Verify Data
+
+Input:
+
+```
+0x965b57da...
+```
+
+Output:
+
+```
+Data: Property of Son - Serial #1234
+From: 0x...
+Block: ...
+Timestamp: ...
+```
+
+---
+
+## Common Mistake
+
+Using TX DATA instead of Transaction Hash:
+
+```
+0x50726f70...   (wrong)
+```
+
+Correct usage:
+
+```
+0x965b57da...   (correct)
+```
+
+---
+
+## Technologies Used
+
+* Python (Flask)
+* Web3.py
+* QRCode
+* Ganache
+
+---
+
+## How to Run
+
+1. Start Ganache
+2. Run the Flask app:
+
+```
+python main.py
+```
+
+3. Open browser:
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+## Conclusion
+
+This project demonstrates how blockchain ensures:
+
+* Data immutability
+* Transparency
+* Verifiability
+
+By storing encoded data in the transaction input and retrieving it via the transaction hash, the system provides a simple proof mechanism for digital ownership or authenticity.
